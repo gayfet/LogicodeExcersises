@@ -1,0 +1,36 @@
+module counter #(
+    parameter MAX = 99,
+    parameter DATA_WIDTH = 16
+) (
+    input logic clk,
+    input logic reset,
+    start,
+    stop,
+    output logic [DATA_WIDTH-1:0] count
+);
+  
+  logic state = 1'b0; //0 for stop, 1 for start 
+
+  always @(posedge start) begin
+    state <= 1'b1;
+  end
+
+  always @(posedge stop) begin
+    state <= 1'b0; 
+  end
+
+  always @(posedge clk) begin 
+    if (reset) begin 
+      state = 1'b0; 
+      count = 0; 
+    end
+    
+    if (state) begin
+      if (count < MAX) begin 
+        count++;
+      end else begin 
+        count = 0;
+      end
+    end
+  end
+endmodule
